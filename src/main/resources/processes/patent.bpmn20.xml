@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef" xmlns:modeler="http://activiti.com/modeler"
+             modeler:version="1.0en" modeler:exportDateTime="20150216104339475" modeler:modelId="933057"
+             modeler:modelVersion="3" modeler:modelLastUpdated="1424083415708">
+
+    <process id="helloWorld" name="helloWorld" isExecutable="true">
+        <startEvent id="startevent1" name="Start"></startEvent>
+        <serviceTask id="servicetask1" name="Провести митинг"
+                     activiti:class="ru.alexandrstal.enginebp.MyServiceTask"></serviceTask>
+        <userTask id="usertask1" name="Выпить пива">
+            <documentation>Hi</documentation>
+        </userTask>
+        <userTask id="usertask2" name=" Выпить водки">
+            <documentation>Hi</documentation>
+        </userTask>
+        <userTask id="usertask3" name=" Завершить митинговать и заняться делом">
+            <documentation>Hi</documentation>
+        </userTask>
+        <sequenceFlow id="flow1" name="" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+        <sequenceFlow id="flow2" name="" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+        <sequenceFlow id="flow3" name="" sourceRef="servicetask1" targetRef="usertask2"></sequenceFlow>
+        <sequenceFlow id="flow4" name="" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
+        <sequenceFlow id="flow5" name="" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
+        <endEvent id="endevent1" name="End"></endEvent>
+    </process>
+</definitions>
