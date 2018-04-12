@@ -1,42 +1,34 @@
 package ru.alexandrstal.enginebp;
 
-import org.activiti.engine.task.Task;
-import org.springframework.boot.SpringApplication;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.spring.ProcessEngineFactoryBean;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
 public class App {
 
-    public static void main(String[] args) {
-        ApplicationContext ac = SpringApplication.run(App.class, args);
+    public static void main(String[] args) throws Exception {
 
-        BPController bpController = ac.getBean(BPController.class);
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("context.xml");
+        ProcessEngineFactoryBean processEngineFactoryBean = ctx.getBean(ProcessEngineFactoryBean.class);
+        ProcessEngine processEngine = processEngineFactoryBean.getObject();
 
-        Map<String, Object> model = new HashMap<>();
+        Map processModel = new HashMap();
+        ProcessInstance processInstance =  processEngine.getRuntimeService().startProcessInstanceByKey("helloWorld", processModel);
+        processEngine.getRuntimeService().setVariable(processInstance.getId(),"currentStatus", 1000);
 
-        String id = bpController.startProcess(model);
-
-        System.out.println("start_process " + id);
-        List<Task> list = bpController.tasks(id);
-        System.out.println("Доступные для процесса таски: " + list);
-
-        String exid = list.get(0).getId();
-        System.out.println("Выполняю таск: " + exid);
-
-
-        bpController.completeTask(exid, model);
-        list = bpController.tasks(id);
-        System.out.println("Доступные для процесса таски:  " + list);
-
-
-
+        /*
+        ProcessInstance processInstance =   processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId("10001").singleResult();
+        System.out.println(processEngine.getRuntimeService().getVariable("10001","currentStatus"));
+*/
     }
+
 
     @Bean
     public BPController bpController() {
